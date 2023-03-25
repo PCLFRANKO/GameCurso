@@ -11,6 +11,7 @@ import udemy.poo.elementos.ImagenFondoGaming;
 import udemy.poo.elementos.Nave;
 import udemy.poo.elementos.Puntuacion;
 import udemy.poo.pantalla.Pantalla;
+import udemy.poo.sonido.Musica;
 
 /**
  *
@@ -20,6 +21,8 @@ public class GameModelNave extends javax.swing.JDialog {
 
     private int fps = 30;
     private Timer tiempo;
+    private Musica music = new Musica("Naruto.mp3", "LargestPiano.mp3");
+    private Thread hilo = new Thread(music);
 
     /**
      * Creates new form GameModelNave
@@ -61,6 +64,7 @@ public class GameModelNave extends javax.swing.JDialog {
         ((Pantalla)this.jPanel2).getComponente().add(burbujas);
         ((Pantalla)this.jPanel2).getComponente().add(nave);
         ((Pantalla)this.jPanel2).getComponente().add(puntuacion);
+        hilo.start();
     }
 
     private void refresh() {
