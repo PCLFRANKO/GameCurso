@@ -1,8 +1,12 @@
 package udemy.poo.game;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import udemy.poo.elementos.Burbujas;
 import udemy.poo.elementos.ImagenFondo;
@@ -10,7 +14,9 @@ import udemy.poo.elementos.ImagenFondoGameN;
 import udemy.poo.elementos.ImagenFondoGaming;
 import udemy.poo.elementos.Nave;
 import udemy.poo.elementos.Puntuacion;
+import udemy.poo.inicio.Inicio;
 import udemy.poo.pantalla.Pantalla;
+import udemy.poo.sonido.EfectosDeMusica;
 import udemy.poo.sonido.Musica;
 
 /**
@@ -39,31 +45,31 @@ public class GameModelNave extends javax.swing.JDialog {
         this.tiempo.start();
         setTitle("Game Nave");
         initComponents();
-        
+
         this.setResizable(false);
         this.setLocationRelativeTo(this);
         this.jPanel2.requestFocusInWindow();
-        
+
         ImagenFondoGameN fondoImagen = ImagenFondoGameN.imagenFondo();
         fondoImagen.configuracion(this.jPanel1, "AvanceComplete.gif", "SecondPrincess.gif");
-        
+
         ImagenFondoGaming fondoGame = ImagenFondoGaming.imagenFondo();
         fondoGame.configuracion(this.jPanel2, "Sky.gif");
-        
+
         Burbujas burbujas = Burbujas.getBurbujas();
         burbujas.configurar(this.jPanel2, "orbe.png");
-        
+
         Nave nave = Nave.getNave();
         nave.configurar(this.jPanel2, "nave.png");
-        
+
         Puntuacion puntuacion = new Puntuacion(jPanel2);
-        
+
         //Anadiendo componentes a los paneles
-        ((Pantalla)this.jPanel1).getComponente().add(fondoImagen);
-        ((Pantalla)this.jPanel2).getComponente().add(fondoGame);
-        ((Pantalla)this.jPanel2).getComponente().add(burbujas);
-        ((Pantalla)this.jPanel2).getComponente().add(nave);
-        ((Pantalla)this.jPanel2).getComponente().add(puntuacion);
+        ((Pantalla) this.jPanel1).getComponente().add(fondoImagen);
+        ((Pantalla) this.jPanel2).getComponente().add(fondoGame);
+        ((Pantalla) this.jPanel2).getComponente().add(burbujas);
+        ((Pantalla) this.jPanel2).getComponente().add(nave);
+        ((Pantalla) this.jPanel2).getComponente().add(puntuacion);
         hilo.start();
     }
 
@@ -160,10 +166,48 @@ public class GameModelNave extends javax.swing.JDialog {
 
     private void backHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backHomeButtonMouseClicked
         // TODO add your handling code here:
+        EfectosDeMusica sonido = new EfectosDeMusica("Zaz.mp3");
+        Thread hiloDos = new Thread(sonido);
+        hiloDos.start();
+
+        Image imagen = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/udemy/poo/recursos/orbe.png"));
+
+        int answer = JOptionPane.showConfirmDialog(rootPane, "Seguro que desea salir del juego?", "Esta saliendo del juego",
+                JOptionPane.YES_NO_OPTION);
+
+        if (answer == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(rootPane, "Saliendo del juego... y volviendo al menu principal",
+                    "Information code", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(imagen));
+
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Inicio().setVisible(true);
+                }
+            });
+            this.dispose();
+            hilo.stop();
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "Sigue adelante, no caigas!", 
+                    "Information code", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(imagen));
+        }
     }//GEN-LAST:event_backHomeButtonMouseClicked
 
     private void infoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseClicked
         // TODO add your handling code here:
+        EfectosDeMusica sonido = new EfectosDeMusica("Zaz.mp3");
+        Thread hiloDos = new Thread(sonido);
+        hiloDos.start();
+        
+        String datos;
+        datos = "Usa las teclas W, A, S, D \n" + "\n" 
+                + "W - Direccion arriba \n" + "\n"
+                + "A - Direccion izquierda \n" + "\n"
+                + "S - Direccion abajo \n" + "\n"
+                + "D - Direccion derecha \n" + "\n"
+                + "Ganale al orbe blanco!";
+        
+        JOptionPane.showMessageDialog(rootPane, datos,"Informacion del juego",JOptionPane.INFORMATION_MESSAGE,
+                                    new ImageIcon("/udemy/poo/recursos/orbe.png"));
     }//GEN-LAST:event_infoButtonMouseClicked
 
     /**
